@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<style>
+#player {
+	opacity: 0;
+    visibility:hidden;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    
+}
+
+#player-cover {
+	
+	position: absolute;
+    top: 20px;
+    left: 20px;
+	width: 640px;
+	height: 480px;
+	background-color: #f00;
+	z-index: 200;
+}
+
+#pic {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    z-index: 999999;
+}
+
+#status {
+	position: absolute;
+	top: 40px;
+	left: 800px;
+	height: 400px; 
+	width: 200px;
+	background-color: #e0e000
+}
+
+#time {
+	position: relative;
+	background-color: #00c;
+	color: #fff;
+	font-weight: bold;
+	width: 50px;
+	text-align: center;
+	top: 20px;
+	left: 75px;
+}
+</style>
+
+</head>
+<body>
+<img id="pic" src="http://placekitten.com/640/480" />
+<div id="player"></div>
+<div id="status">
+	<input id="time" type="text" />
+</div>
+<!-- <div id="player-cover"></div> -->
+
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
+<script>
+    //Load player api asynchronously.
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+    var done = false;
+    var player;
+    function onYouTubeIframeAPIReady() {
+        player = new YT.Player('player', {
+          height: '480',
+          width: '640',
+          videoId: 'kiOl2iV1MU8',
+          events: {
+            'onReady': onPlayerReady,
+            'onStateChange': onPlayerStateChange
+          }
+        });
+    }
+    function onPlayerReady(evt) {
+      //  evt.target.playVideo();
+    }
+    function onPlayerStateChange(evt) {
+        if (evt.data == YT.PlayerState.PLAYING && !done) {
+            setTimeout(stopVideo, 60000);
+            done = true;
+        }
+    }
+    function stopVideo() {
+        player.stopVideo();
+    }
+	
+	
+	$(document).ready(function(){
+	
+	
+		$('#pic').click(function(){
+			var currentVidTime;
+			var catGifCount = 0;
+			setInterval(function() {
+				currentVidTime = Math.floor(player.getCurrentTime());
+				switch (currentVidTime) {
+					case 5:
+						$('#player').css('visibility','visible');
+						$('body').css('background-color','#000');
+						break;
+					case 7:
+						if (catGifCount === 0) {
+							$('#status').append('<img src="party_hard_cat2.gif" />'); 
+							catGifCount++;
+						}
+						break;
+					default:
+						break;
+				};
+				$('#time').val(currentVidTime);
+			}, 250);
+		
+			player.playVideo();
+			$('#player').show();
+			
+	
+			
+		
+		});	
+	
+	});
+	
+//	});
+	
+	
+</script>
+</body>
+</html>
