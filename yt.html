@@ -3,8 +3,8 @@
 <head>
 <style>
 #player {
-	opacity: 0;
-    visibility:hidden;
+/*	opacity: 0;
+	visibility:hidden; */
     position: absolute;
     top: 40px;
     left: 40px;
@@ -30,9 +30,9 @@
 }
 
 #status {
-	position: absolute;
-	top: 40px;
-	left: 800px;
+	position: relative;
+	float: left;
+	
 	height: 400px; 
 	width: 200px;
 	background-color: #e0e000
@@ -48,12 +48,59 @@
 	top: 20px;
 	left: 75px;
 }
+#video-container {
+	position: relative;
+	float:left;
+	width: 720px;
+	height: 560px;
+	background-color: #f60;
+}
+
+#video-end-form {
+	position: absolute;
+	opacity: 0;
+	width: 640px;
+	height: 480px;
+	background-color: #ff0;
+	top: 40px;
+	left: 40px;
+}
+
+#video-end-form label {
+	float: left;
+	clear: left;
+}
+
+#video-end-form input {
+	float: left;
+}
+
+#video-end-form button {
+	clear: left; 
+	float: left;
+	margin-left: 40px;
+}
 </style>
 
 </head>
 <body>
-<img id="pic" src="http://placekitten.com/640/480" />
-<div id="player"></div>
+<div id="video-container">
+	<img id="pic" style="width: 640px; height:480px;" src="playbutton.jpg" />
+	<div id="player"></div>
+	<div id="video-end-form">
+		<form>
+			<h2>Fill out our form!</h2>
+			<fieldset>sdfsdf</fieldset>
+			<label>Field 0</label>
+			<input />
+			<label>Field 1</label>
+			<input />
+			<label>Field 2</label>
+			<input />
+			<button>Submit form</button>
+		</form>
+	</div>
+</div>
 <div id="status">
 	<input id="time" type="text" />
 </div>
@@ -72,7 +119,14 @@
         player = new YT.Player('player', {
           height: '480',
           width: '640',
-          videoId: 'kiOl2iV1MU8',
+          videoId: 'UDGbpQEyCpE',
+		  playerVars: {
+			wmode: 'transparent',
+			         controls: 0,
+            showinfo: 0 ,
+            modestbranding: 1
+		  
+		  },
           events: {
             'onReady': onPlayerReady,
             'onStateChange': onPlayerStateChange
@@ -84,12 +138,14 @@
     }
     function onPlayerStateChange(evt) {
         if (evt.data == YT.PlayerState.PLAYING && !done) {
-            setTimeout(stopVideo, 60000);
+			setTimeout(stopVideo, 15000);
             done = true;
         }
     }
     function stopVideo() {
         player.stopVideo();
+		//$('#pic').fadeIn(2000);
+		$('#video-end-form').fadeIn(1000);
     }
 	
 	
@@ -102,11 +158,12 @@
 			setInterval(function() {
 				currentVidTime = Math.floor(player.getCurrentTime());
 				switch (currentVidTime) {
-					case 5:
+					case 1:
+						$('#pic').fadeOut(1000);
 						$('#player').css('visibility','visible');
 						$('body').css('background-color','#000');
 						break;
-					case 7:
+					case 5:
 						if (catGifCount === 0) {
 							$('#status').append('<img src="partyhard.gif" />'); 
 							catGifCount++;
@@ -121,7 +178,10 @@
 			player.playVideo();
 			$('#player').show();
 			
-	
+		$('body').click(function(){
+			$(this).css('background-color','#FFF');
+		
+		});
 			
 		
 		});	
